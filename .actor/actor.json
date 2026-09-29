@@ -13,6 +13,7 @@
         "timeoutSecs": 3600
     },
     "input": "./input_schema.json",
+    "output": "./output_schema.json",
     "storages": {
         "dataset": "./dataset_schema.json"
     },
