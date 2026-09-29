@@ -1,0 +1,27 @@
+{
+    "actorSpecification": 1,
+    "name": "pdf-docx-to-markdown",
+    "title": "PDF & DOCX to Markdown — Table Extraction & RAG Chunks",
+    "description": "Convert PDF and Word (DOCX) files to LLM-ready Markdown. Tables stay real Markdown tables (76% of rows exact on unseen statistical PDFs vs 31% without our repair), plus headings, page markers and optional RAG chunks with page range and section path. Batch URLs or uploads. No AI keys.",
+    "version": "0.1",
+    "buildTag": "latest",
+    "minMemoryMbytes": 1024,
+    "maxMemoryMbytes": 4096,
+    "defaultRunOptions": {
+        "build": "latest",
+        "memoryMbytes": 2048,
+        "timeoutSecs": 3600
+    },
+    "input": "./input_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    },
+    "dockerfile": "../Dockerfile",
+    "readme": "../README.md",
+    "changelog": "../CHANGELOG.md",
+    "categories": [
+        "AI",
+        "DEVELOPER_TOOLS",
+        "OPEN_SOURCE"
+    ]
+}

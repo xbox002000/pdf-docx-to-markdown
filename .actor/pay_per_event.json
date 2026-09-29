@@ -1,0 +1,18 @@
+{
+    "apify-actor-start": {
+        "eventTitle": "Actor start",
+        "eventDescription": "Apify synthetic event, charged automatically once per GB of run memory (1 GB minimum). Kept at Apify's default price; covers the first 5 seconds of compute of every run.",
+        "eventPriceUsd": 5e-05
+    },
+    "document-converted": {
+        "eventTitle": "Document converted",
+        "eventDescription": "Charged once per PDF or DOCX successfully converted (covers download and setup). Failed downloads and unreadable files are never charged.",
+        "eventPriceUsd": 0.002
+    },
+    "page-converted": {
+        "eventTitle": "Page converted",
+        "eventDescription": "Charged per page converted to Markdown (PDF: actual pages converted; DOCX: page count stored by Word, or 3,000 characters per page if absent). RAG chunking is included at no extra cost.",
+        "eventPriceUsd": 0.0005,
+        "isPrimaryEvent": true
+    }
+}

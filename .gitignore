@@ -1,0 +1,10 @@
+.venv/
+.venv-docling/
+storage/
+__pycache__/
+*.pyc
+eval/node_modules/
+eval/
+samples/
+research/
+test-results/

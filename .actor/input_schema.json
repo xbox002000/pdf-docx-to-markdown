@@ -1,0 +1,122 @@
+{
+    "title": "PDF & DOCX to Markdown input",
+    "description": "Add PDF or DOCX files by URL or upload them, choose Markdown and/or RAG chunks. Tables, headings, lists and page numbers are preserved.",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "urls": {
+            "title": "Document URLs (PDF or DOCX)",
+            "type": "array",
+            "description": "Direct links to PDF or DOCX files. Add as many as you like — they are processed as one batch. Tip: use the direct download link, not a viewer page.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://arxiv.org/pdf/1512.03385" }
+            ],
+            "sectionCaption": "Documents"
+        },
+        "files": {
+            "title": "Upload files",
+            "type": "array",
+            "description": "Upload PDF or DOCX files from your computer (stored in your Apify key-value store). You can also paste URLs or key-value store references here (`recordKey` or `storeName/recordKey`).",
+            "editor": "fileupload"
+        },
+        "outputFormat": {
+            "title": "Output",
+            "type": "string",
+            "description": "`markdown`: one dataset item per document with the full Markdown. `chunks`: RAG-ready chunks (one dataset item per chunk) plus a document summary item. `markdown_and_chunks`: both.",
+            "editor": "select",
+            "enum": ["markdown", "chunks", "markdown_and_chunks"],
+            "enumTitles": ["Markdown (one item per document)", "RAG chunks (one item per chunk)", "Markdown + RAG chunks"],
+            "default": "markdown",
+            "sectionCaption": "Output"
+        },
+        "pageMarkers": {
+            "title": "Page markers",
+            "type": "string",
+            "description": "How page boundaries appear in the Markdown. `comment` inserts `<!-- page: 3 -->` (invisible when rendered, easy to parse); `text` inserts `--- Page 3 ---`; `none` omits them. DOCX files only get markers where Word stored page breaks.",
+            "editor": "select",
+            "enum": ["comment", "text", "none"],
+            "enumTitles": ["HTML comment <!-- page: N -->", "Text line --- Page N ---", "None"],
+            "default": "comment"
+        },
+        "saveMarkdownFiles": {
+            "title": "Also save .md files",
+            "type": "boolean",
+            "description": "Save each document as a .md file in the run's key-value store (handy for downloading, and for very large documents that exceed dataset item limits).",
+            "default": true
+        },
+        "chunkSize": {
+            "title": "Chunk size",
+            "type": "integer",
+            "description": "Maximum chunk size (in the unit below). Chunks break at headings, paragraphs and table rows — never mid-row.",
+            "default": 1000,
+            "minimum": 100,
+            "maximum": 20000,
+            "sectionCaption": "RAG chunking",
+            "sectionDescription": "Used when Output is `chunks` or `markdown_and_chunks`."
+        },
+        "chunkOverlap": {
+            "title": "Chunk overlap",
+            "type": "integer",
+            "description": "How much trailing context from the previous chunk is repeated at the start of the next one (same unit as chunk size, max 50% of chunk size).",
+            "default": 150,
+            "minimum": 0,
+            "maximum": 10000
+        },
+        "chunkUnit": {
+            "title": "Chunk size unit",
+            "type": "string",
+            "description": "`tokens` uses a fast approximation (≈4 characters per token) so no tokenizer download is needed; `characters` is exact.",
+            "editor": "select",
+            "enum": ["tokens", "characters"],
+            "enumTitles": ["Tokens (≈4 chars each)", "Characters"],
+            "default": "tokens"
+        },
+        "prependHeadingPath": {
+            "title": "Prefix chunks with their section path",
+            "type": "boolean",
+            "description": "Adds a line like `Section: 4. Experiments > 4.1 ImageNet` to each chunk's text. The heading path is always available in the `headingPath` field either way.",
+            "default": false
+        },
+        "pageRange": {
+            "title": "Page range (PDF)",
+            "type": "string",
+            "description": "Convert only some pages, e.g. `1-10`, `5`, or `20-` (to the end). Leave empty for all pages.",
+            "editor": "textfield",
+            "pattern": "^\\s*(\\d+\\s*(-\\s*\\d*)?)?\\s*$",
+            "sectionCaption": "Advanced"
+        },
+        "maxPagesPerDocument": {
+            "title": "Max pages per document",
+            "type": "integer",
+            "description": "Safety cap on pages converted (and billed) per PDF. 0 = no cap.",
+            "default": 500,
+            "minimum": 0
+        },
+        "repairTables": {
+            "title": "Repair tables",
+            "type": "boolean",
+            "description": "Fix table artifacts (words split across columns, wrapped row labels, table captions glued into the header, empty columns). Uses the page's own words as ground truth, so it never invents text.",
+            "default": true
+        },
+        "removeHeadersFooters": {
+            "title": "Remove running headers and footers",
+            "type": "boolean",
+            "description": "Drop repeated page headers/footers (page numbers, running titles) so they don't pollute your chunks. Page numbers are still kept as page markers.",
+            "default": true
+        },
+        "includeImageText": {
+            "title": "Keep text found inside charts/figures",
+            "type": "boolean",
+            "description": "Charts often contain axis labels and tick numbers that read as noise. Off by default.",
+            "default": false
+        },
+        "pdfPassword": {
+            "title": "PDF password",
+            "type": "string",
+            "description": "Password for encrypted PDFs (applied to all PDFs in the run).",
+            "editor": "textfield",
+            "isSecret": true
+        }
+    }
+}
