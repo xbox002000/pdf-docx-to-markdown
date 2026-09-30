@@ -33,7 +33,7 @@ We count a table row as correct only if its label is in one cell and every value
 
 Speed on one CPU core: ≈0.4–0.5 s per PDF page, ≈0.06 s per DOCX page; peak memory ≈600 MB.
 
-**Known limits:** no OCR yet (scanned pages are flagged in `stats.scannedPages`); some tightly-kerned PDFs lose spaces between words (`LongBeach`); complex multi-row headers can still come out split.
+**Known limits:** this Actor does not OCR (scanned pages are flagged in `stats.scannedPages`; use the Scanned OCR Actor); some tightly-kerned PDFs lose spaces between words (`LongBeach`); complex multi-row headers can still come out split.
 
 ## Use cases
 
@@ -181,7 +181,7 @@ Also works with **n8n, Make, Zapier, LangChain (`ApifyDatasetLoader`), LlamaInde
 ## FAQ
 
 **Does it do OCR on scanned PDFs?**
-Not in this version. Pages without a text layer are detected and listed in `stats.scannedPages` with a warning, so you know which files need OCR. OCR is on the roadmap — open an Issue if you need it.
+Not in this Actor. Pages without a text layer are detected and listed in `stats.scannedPages` with a warning. For scanned/image PDFs, use [Scanned PDF/Image OCR to Markdown](https://apify.com/ingenious_quip_bxq/scanned-ocr-to-markdown).
 
 **How does table repair work — can it change my data?**
 It never invents text. Words are only re-joined when the joined word physically exists on that PDF page (so `B | ank credit` → `Bank credit`, but `iPhone | sales` is never glued). Wrapped row labels are merged into their data row and table captions that were glued into the header are lifted out. Turn it off with `repairTables: false`.
@@ -209,6 +209,12 @@ Supply `pdfPassword`.
 
 **Something converted badly?**
 Open an Issue with a public link to the file — table edge cases are exactly what we want to fix.
+
+## Related Actors / See also
+
+- [Scanned PDF/Image OCR to Markdown](https://apify.com/ingenious_quip_bxq/scanned-ocr-to-markdown) — use when pages have **no text layer** (this Actor flags them in `stats.scannedPages`; it does not OCR).
+- [Sitemap URL Extractor — PDF/DOCX Tags + robots.txt](https://apify.com/ingenious_quip_bxq/sitemap-url-discovery) — discover PDF/DOCX URLs from XML sitemaps; outputs `DOC_TO_MARKDOWN_INPUT` for this Actor.
+- [Bulk URL Status Checker — 404s & Redirects](https://apify.com/ingenious_quip_bxq/url-status-checker) — optional: verify document URLs before conversion.
 
 ## License & source code
 
